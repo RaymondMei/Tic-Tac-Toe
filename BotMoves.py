@@ -1,7 +1,4 @@
 
-def printBoard(board):
-    print(*board,sep='\n')
-
 def checkWin(board, boardSize, winCondition): 
     # a tuple - (if win exists, returns 1 if player1 wins 0 if player2/CPU wins)
     # check rows and cols
@@ -109,12 +106,13 @@ def minimax(board, depth, boardSize, winCondition, bot, alpha, beta):
 
     gameWon, player = checkWin(board, boardSize, winCondition)
     if(gameWon): 
-        if(player == 1): return 1 * (depth+1)    # positive score if player wins, negative if bot wins
-        else: return -1 * (depth+1)                # multiply by depth to prioritize winning in the fewest moves possible (+1 to avoid multiplying by 0)
+        if(player == 1): return 1 * (depth + 1)    # positive score if player wins, negative if bot wins
+        else: return -1 * (depth + 1)                # multiply by depth to prioritize winning in the fewest moves possible (+1 to avoid multiplying by 0)
 
     elif(depth == 0):                            # tie score set as 0
         return 0
 
+    flag = False
     if(bot): # bot's turn (minimizing)
         bestScore = float('inf')
         for i in range(boardSize):
@@ -126,6 +124,7 @@ def minimax(board, depth, boardSize, winCondition, bot, alpha, beta):
                     beta = min(beta, bestScore)
                     if(beta <= alpha):
                         break
+
     else: # player's turn (maximizing)
         bestScore = float('-inf')
         for i in range(boardSize):
@@ -139,63 +138,3 @@ def minimax(board, depth, boardSize, winCondition, bot, alpha, beta):
                         break
 
     return bestScore
-
-
-'''
-while movesLeft(board): 
-    pos = int(input("Which square would you like to mark?\n"))
-    x, y = convert(pos) 
-    while(board[y][x]!=" "):
-        pos = int(input("Which (empty) square would you like to mark?\n"))
-        x, y = convert(pos)
-    board[y][x] = 'X'
-    printBoard(board)
-    if(checkWin(board)[0]):
-        print("You win!")
-        break
-    if not movesLeft(board):
-        print("It's a tie!")
-        break
-    cpuMove = bestMove(board)
-    print("CPU moves at position:",cpuMove)
-    board[(cpuMove-1)//3][cpuMove%3-1] = 'O'
-    printBoard(board)
-    if(checkWin(board)[0]):
-        print("You lose!")
-        break
-'''
-
-'''
-test function to make bot play itself (comment game above)
-random is kinda useless (just check if first is each of 9 positions but wtv)
-set position only needs to test once 
-
-def test(rand, output): 
-    board = [[" " for i in range(3)] for i in range(3)]
-    # optional random move 
-    if(rand):
-        r = __import__("random").randint(1, 9)
-        board[(r-1)//3][r%3-1]='X'
-    if(output):
-        printBoard(board)
-        print()
-    while movesLeft(board): 
-        cpuMove = bestMove(board) 
-        board[(cpuMove-1)//3][cpuMove%3-1] = ['X','O'][rand]
-        if(output): 
-            printBoard(board)
-            print()
-        if(checkWin(board)[0]): return 0
-        cpuMove = bestMove(board) 
-        board[(cpuMove-1)//3][cpuMove%3-1] = ['O','X'][rand]
-        if(output): 
-            printBoard(board)
-            print()
-        if(checkWin(board)[0]): return 0
-        if not movesLeft(board): return 1
-for i in range(50):
-    assert(test(0, 1)) 
-    assert(test(1, 1))
-    print(i)
-print("Done tests")
-''' 

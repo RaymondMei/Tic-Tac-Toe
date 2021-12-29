@@ -4,16 +4,16 @@ from BotMoves import botMove
 pygame.init()
 
 # size of board (min: 2)
-boardSize = 15
+boardSize = 3
 
 # max number of moves (for checking for draws)
 maxMoves = boardSize**2
 
 # number of pieces in a row to win (min: 2)
-winCondition = 5
+winCondition = 3
 
 # whether or not the bot is activated
-botActive = False
+botActive = True
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 900
@@ -98,7 +98,7 @@ def drawEndRectangle(colour):
 
 # displays message at the center of the screen
 def displayMessage(message, y):
-    font = pygame.font.SysFont("Source Code Pro", 60)
+    font = pygame.font.SysFont("Source Code Pro", 50)
     displayText = font.render(message, 1, BLACK)
     displayPosition = displayText.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + y))
     screen.blit(displayText, displayPosition)
