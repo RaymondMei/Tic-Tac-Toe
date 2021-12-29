@@ -1,5 +1,5 @@
 import pygame, sys, random, math
-from BotMoves import botMove
+from BotMoves import botMove, checkWin
 
 pygame.init()
 
@@ -103,95 +103,6 @@ def displayMessage(message, y):
     displayPosition = displayText.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + y))
     screen.blit(displayText, displayPosition)
 
-def checkWin(board, winCondition): 
-    # a tuple - (if win exists, returns 1 if player1 wins 0 if player2/CPU wins)
-    # check rows and cols
-    for i in range(boardSize):
-        streak = 0
-        if(board[i][0] != 0):
-            streak = 1
-        for m in range(1, boardSize):
-            if(board[i][m] == 0):
-                streak = 0
-            elif(board[i][m] != board[i][m - 1]):
-                streak = 1
-            else:
-                streak += 1
-                if(streak == winCondition):
-                    print("Horizontal Win")
-                    return (1, board[i][m] == 1)
-        streak = 0
-        if(board[0][i] != 0):
-            streak = 1
-        for n in range(1, boardSize):
-            if(board[n][i] == 0):
-                streak = 0
-            elif(board[n][i] != board[n - 1][i]):
-                streak = 1
-            else:
-                streak += 1
-                if(streak == winCondition):
-                    print("Vertical Win")
-                    return (1, board[n][i] == 1)
-    # check diagonals
-    for i in range(boardSize):
-        streak = 0
-        if(board[i][0] != 0):
-            streak = 1
-        for m in range(1, boardSize - i):
-            if(board[i + m][m] == 0):
-                streak = 0
-            elif(board[i + m][m] != board[i + m - 1][m - 1]):
-                streak = 1
-            else:
-                streak += 1
-                if(streak == winCondition):
-                    print("Left diagonal win 1")
-                    return (1, board[i + m][m] == 1)
-    for i in range(boardSize):
-        streak = 0
-        if(board[0][i] != 0):
-            streak = 1
-        for n in range(1, boardSize - i):
-            if(board[n][i + n] == 0):
-                streak = 0
-            elif(board[n][i + n] != board[n - 1][i + n - 1]):
-                streak = 1
-            else:
-                streak += 1
-                if(streak == winCondition):
-                    print("Right diagonal win 1")
-                    return (1, board[n][i + n] == 1)
-    for i in range(boardSize):
-        streak = 0
-        if(board[i][0] != 0):
-            streak = 1
-        for m in range(1, i + 1):
-            if(board[i - m][m] == 0):
-                streak = 0
-            elif(board[i - m][m] != board[i - m + 1][m - 1]):
-                streak = 1
-            else:
-                streak += 1
-                if(streak == winCondition):
-                    print("Left diagonal win 2")
-                    return (1, board[i - m][m] == 1)
-    for i in range(boardSize):
-        streak = 0
-        if(board[boardSize - 1][i] != 0):
-            streak = 1
-        for m in range(2, boardSize - i + 1):
-            if(board[boardSize - m][i + m - 1] == 0):
-                streak = 0
-            elif(board[boardSize - m][i + m - 1] != board[boardSize - m + 1][i + m - 2]):
-                streak = 1
-            else:
-                streak += 1
-                if(streak == winCondition):
-                    print("Right diagonal win 2")
-                    return (1, board[boardSize - m][i + m - 1] == 1)
-    return (0, 0) 
-
 setup(BLACK, 5);
 pygame.display.update()
 
@@ -240,7 +151,7 @@ while(True):
                 # displayBoard()
 
                 # check to see if the game has been won using checkWin function
-                gameWon, player = checkWin(board, winCondition)
+                gameWon, player = checkWin(board, boardSize, winCondition, 1)
                 if(gameWon):
                     if(player == 0):
                         score_o += 1
